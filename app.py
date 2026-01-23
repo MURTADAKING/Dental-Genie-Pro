@@ -7,7 +7,7 @@ import os
 # -----------------------------------------------------------
 # API Key Configuration
 # This key connects my app to Google's servers
-MY_API_KEY = "AIzaSyAiMpFDAfD-Q2Li1fJaBcEVLP9-H8uIvBQ"
+MY_API_KEY = "................................"
 # -----------------------------------------------------------
 
 # Initialize the AI Client
@@ -15,13 +15,13 @@ my_dental_bot = genai.Client(api_key=MY_API_KEY)
 
 # System Instructions (The Brain Logic)
 # Defining the AI's persona as an expert dental consultant
-instructions = """
+instructions="""
 You are an expert AI consultant specifically for dental students.
 Your Role:
 1. Explain dental anatomy, pathology, and treatments with high scientific precision.
 2. Use correct professional terminology (e.g., Mesial, Distal, Buccal).
-3. If asked about non-dental topics, politely decline to maintain focus.
-"""
+3. If asked about non-dental topics, politely decline to maintain focus."""
+
 
 # 2. The main function to handle student queries for chat interface
 def ask_gemini(student_question, chat_history): # chat_history is passed by gr.ChatInterface
@@ -29,8 +29,8 @@ def ask_gemini(student_question, chat_history): # chat_history is passed by gr.C
         # Sending request to the latest Gemini 3 model
         response = my_dental_bot.models.generate_content(
             model="gemini-3-flash-preview",
-            contents=instructions + "\n\nQuestion: " + student_question
-        )
+            contents=instructions + "\n\nQuestion: " + student_question)
+        
         return response.text
     except Exception as error:
         return f"System Error: {error}"
@@ -43,35 +43,39 @@ def analyze_xray_image(image):
         # Assuming the image is a PIL Image object as type="pil" suggests
         # Using a vision model for image analysis
         response = my_dental_bot.models.generate_content(
-            model="gemini-3-flash-preview", # Use a vision-capable model for images
+            model="gemini-3-flash-preview", 
             contents=["Analyze this dental X-ray. What pathology do you see?", image]
         )
         return response.text
     except Exception as error:
       return f"System Error: {error}"
 
-# Placeholder functions for quiz and clinical case, as they were incomplete
 def generate_quiz(topic):
-    # This function needs implementation based on the prompt's intent.
-    # For now, it returns a placeholder.
-    return f"Quiz for topic: {topic}\n(Implementation pending)"
+    if not topic: return "⚠️ Enter topic."
+    try:
+        return my_dental_bot.models.generate_content(
+            model="gemini-3.0-flash", 
+            contents="Write 3 hard MCQs with answers about: " + topic).text
+    except Exception as e: return str(e)
 
-def clinical_case():
-    # This function needs implementation based on the prompt's intent.
-    # For now, it returns a placeholder.
-    return "New patient scenario generated!\n(Implementation pending)"
+def clinical_case(input_text):
+    try:
+        return my_dental_bot.models.generate_content(
+            model="gemini-3.0-flash", 
+            contents="Write a realistic dental clinical case scenario for diagnosis.").text
+    except Exception as e: return str(e)
+
 
 # 4. User Interface Design (UI) using gr.Blocks for multiple tabs
-dental_theme = gr. themes. Soft (
+dental_theme = gr.themes.Soft(
 primary_hue="cyan"
 ,secondary_hue="teal"
 ,neutral_hue="slate",
 ). set (button_primary_background_fill="*primary_500", button_primary_background_fill_hover="*primary_600")
-custom_css =""""
-#header {text-align: center; color: #0891b2;
-margin-bottom: 20px; }
-#subtitle {text-align: center; font-size: 1.2em;
-color: #64748bi}"""
+custom_css ="""
+#header {text-align: center; color: #0891b2;margin-bottom: 20px; }
+#subtitle {text-align: center; font-size: 1.2em;color: #64748b}"""
+
 with gr. Blocks (theme=dental_theme,css=custom_css,
 title="Dental Genie Pro") as app :
     gr.Markdown("""
@@ -90,8 +94,8 @@ title="Dental Genie Pro") as app :
                 ["What are the steps of Root Canal Treatment?"],
                 ["Difference between Gingivitis and Periodontitis"],
             ],
-            submit_btn="Ask Gemini 🚀"
-        )
+        submit_btn="Ask Gemini 🚀")
+        
 
     with gr.Tab("🩻 X-Ray Analysis"):
         gr.Markdown("Upload a dental X-ray to detect caries or pathologies.")
@@ -101,8 +105,8 @@ title="Dental Genie Pro") as app :
         gr.Button("Analyze X-Ray").click(
             fn=analyze_xray_image,
             inputs=img_input,
-            outputs=output_text
-        )
+            outputs=output_text)
+        
 
     with gr.Tab("🎓 Quiz Mode"):
         gr.Markdown("### Test your knowledge!")
