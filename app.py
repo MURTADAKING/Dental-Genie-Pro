@@ -51,17 +51,17 @@ def analyze_xray_image(image):
       return f"System Error: {error}"
 
 def generate_quiz(topic):
-    if not topic: return "⚠️ Enter topic."
+    current_topic = topic if topic else "General Dentistry"
     try:
         return my_dental_bot.models.generate_content(
-            model="gemini-3.0-flash", 
+            model="gemini-2.0-flash", # use gemini-2.0-flash because gemini-3.0-flash does not support text generation
             contents="Write 3 hard MCQs with answers about: " + topic).text
     except Exception as e: return str(e)
 
-def clinical_case(input_text):
+def clinical_case():
     try:
         return my_dental_bot.models.generate_content(
-            model="gemini-3.0-flash", 
+            model="gemini-2.0-flash", 
             contents="Write a realistic dental clinical case scenario for diagnosis.").text
     except Exception as e: return str(e)
 
