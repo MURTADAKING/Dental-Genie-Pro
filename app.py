@@ -9,7 +9,7 @@ import os
 # ---------------------------------------------------
 # API Key Configuration
 # This key connects my app to Google's servers
-MY_API_KEY = "......................................."
+MY_API_KEY = os.environ.get("MY_API_KEY")
 # ----------------------------------------------------
 
 # Initialize the AI Client
@@ -30,9 +30,10 @@ Your Role:
 def ask_gemini(student_question, chat_history): 
     try:
         # Sending request to the latest Gemini 3 model
+        prompt= instructions +"\nconversation:\n"+ str (chat_history) +"\nStudent: " + student_question +"\nDental Genie"
         response = my_dental_bot.models.generate_content(
             model="gemini-3-flash-preview",
-            contents=instructions + "\n\nQuestion: " + student_question)
+            contents= prompt)
         
         return response.text
     except Exception as error:
@@ -59,15 +60,20 @@ def generate_quiz(topic):
     current_topic = topic if topic else "General Dentistry"
     try:
         return my_dental_bot.models.generate_content(
-            model="gemini-2.0-flash", # use gemini-2.0-flash because gemini-3.0-flash does not support text generation
-            contents="Write 3 hard MCQs with answers about: " + topic).text
+            model="gemini-3-flash-preview", 
+            contents=f"Create 3 challenging dental MCQs about {current_topic} with answers.",
+            config={
+                "max_output_tokens":2028 ,
+                "temperature": 0.5 })
+        return response.text
     except Exception as e: return str(e)
 
 def clinical_case():
     try:
         return my_dental_bot.models.generate_content(
-            model="gemini-2.0-flash", 
+            model="gemini-3-flash-preview", 
             contents="Write a realistic dental clinical case scenario for diagnosis.").text
+        return response.text
     except Exception as e: return str(e)
 
 #----------------------------------------------------------------
@@ -117,14 +123,14 @@ title="Dental Genie Pro") as app :
     with gr.Tab("🎓 Quiz Mode"):
         gr.Markdown("### Test your knowledge!")
         topic_in = gr.Textbox(label="Enter Topic (e.g., Pulpitis, Local Anesthesia)")
-        quiz_out = gr.Textbox(label="MCQs")
+        quiz_out = gr.Textbox(label="MCQs" , lines=20)
         btn_quiz = gr.Button("Generate Quiz", variant="secondary")
         btn_quiz.click(generate_quiz, inputs=topic_in, outputs=quiz_out)
 
     with gr.Tab("💡 Clinical Case Sim"):
         gr.Markdown("### Virtual Patient Scenario")
         case_btn = gr.Button("Start New Case 😷", variant="primary")
-        case_out = gr.Textbox(label="Patient Scenario", lines=8)
+        case_out = gr.Textbox(label="Patient Scenario", lines=15)
         case_btn.click(clinical_case, inputs=None, outputs=case_out)
 #--------------------------
 # 5. Launch the application
