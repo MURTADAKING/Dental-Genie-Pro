@@ -1,3 +1,4 @@
+kB
 # 1. install necessary libraries for AI and UI
 import os
 from google import genai
@@ -7,7 +8,7 @@ import os
 # -----------------------------------------------------------
 # API Key Configuration
 # This key connects my app to Google's servers
-MY_API_KEY = "................................"
+MY_API_KEY = "AIzaSyAiMpFDAfD-Q2Li1fJaBcEVLP9-H8uIvBQ"
 # -----------------------------------------------------------
 
 # Initialize the AI Client
@@ -62,7 +63,18 @@ def clinical_case():
     return "New patient scenario generated!\n(Implementation pending)"
 
 # 4. User Interface Design (UI) using gr.Blocks for multiple tabs
-with gr.Blocks(title="🦷 Dental Genie | AI Student Assistant") as app:
+dental_theme = gr. themes. Soft (
+primary_hue="cyan"
+,secondary_hue="teal"
+,neutral_hue="slate",
+). set (button_primary_background_fill="*primary_500", button_primary_background_fill_hover="*primary_600")
+custom_css =""""
+#header {text-align: center; color: #0891b2;
+margin-bottom: 20px; }
+#subtitle {text-align: center; font-size: 1.2em;
+color: #64748bi}"""
+with gr. Blocks (theme=dental_theme,css=custom_css,
+title="Dental Genie Pro") as app :
     gr.Markdown("""
     # 🦷 Dental Genie | AI Student Assistant
     An intelligent assistant powered by **Gemini 3** technology, designed to help dental students with:
