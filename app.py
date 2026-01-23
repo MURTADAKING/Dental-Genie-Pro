@@ -9,7 +9,7 @@ import os
 # ---------------------------------------------------
 # API Key Configuration
 # This key connects my app to Google's servers
-MY_API_KEY = "AIzaSyDtHT6WxQdhllTUf0Bgzt61eM6z3Km34Yc"
+MY_API_KEY = "......................................."
 # ----------------------------------------------------
 
 # Initialize the AI Client
