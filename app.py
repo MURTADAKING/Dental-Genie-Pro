@@ -1,4 +1,3 @@
-kB
 # 1. install necessary libraries for AI and UI
 import os
 from google import genai
