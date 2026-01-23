@@ -1,20 +1,21 @@
+# --------------------------------------------
 # 1. install necessary libraries for AI and UI
+#---------------------------------------------
 import os
 from google import genai
 import gradio as gr
 import os
 
-# -----------------------------------------------------------
+# ---------------------------------------------------
 # API Key Configuration
 # This key connects my app to Google's servers
-MY_API_KEY = "................................"
-# -----------------------------------------------------------
+MY_API_KEY = "AIzaSyDtHT6WxQdhllTUf0Bgzt61eM6z3Km34Yc"
+# ----------------------------------------------------
 
 # Initialize the AI Client
 my_dental_bot = genai.Client(api_key=MY_API_KEY)
 
 # System Instructions (The Brain Logic)
-# Defining the AI's persona as an expert dental consultant
 instructions="""
 You are an expert AI consultant specifically for dental students.
 Your Role:
@@ -23,8 +24,10 @@ Your Role:
 3. If asked about non-dental topics, politely decline to maintain focus."""
 
 
+#------------------------------------------------------------------
 # 2. The main function to handle student queries for chat interface
-def ask_gemini(student_question, chat_history): # chat_history is passed by gr.ChatInterface
+#------------------------------------------------------------------
+def ask_gemini(student_question, chat_history): 
     try:
         # Sending request to the latest Gemini 3 model
         response = my_dental_bot.models.generate_content(
@@ -35,7 +38,9 @@ def ask_gemini(student_question, chat_history): # chat_history is passed by gr.C
     except Exception as error:
         return f"System Error: {error}"
 
+#-----------------------------------------------------------------
 # 3. Function for X-ray analysis , generate quiz and clinical case
+#-----------------------------------------------------------------
 def analyze_xray_image(image):
     if image is None:
         return "Please upload an image for analysis."
@@ -65,8 +70,9 @@ def clinical_case():
             contents="Write a realistic dental clinical case scenario for diagnosis.").text
     except Exception as e: return str(e)
 
-
+#----------------------------------------------------------------
 # 4. User Interface Design (UI) using gr.Blocks for multiple tabs
+#----------------------------------------------------------------
 dental_theme = gr.themes.Soft(
 primary_hue="cyan"
 ,secondary_hue="teal"
@@ -120,6 +126,7 @@ title="Dental Genie Pro") as app :
         case_btn = gr.Button("Start New Case 😷", variant="primary")
         case_out = gr.Textbox(label="Patient Scenario", lines=8)
         case_btn.click(clinical_case, inputs=None, outputs=case_out)
-
-# Launch the application
+#--------------------------
+# 5. Launch the application
+#--------------------------
 app.launch()
