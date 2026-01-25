@@ -1,5 +1,5 @@
 # ============================================================
-# Dental Genie Pro - AI Assistant for Dental Student
+# Dental Genie Pro - AI Assistant for Dental Students
 # ============================================================
 
 # --------------------------------------------
