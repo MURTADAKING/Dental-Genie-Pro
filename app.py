@@ -12,7 +12,7 @@ from google import genai
 # ============================================
 # 2. API Key Configuration
 # ============================================
-MY_API_KEY = "AIzaSyC0TrXrm97xteLHto48WRp0oQwHKC4SLZs"
+MY_API_KEY = "..........................."
 
 
 # ============================================
