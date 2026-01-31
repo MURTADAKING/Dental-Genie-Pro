@@ -12,7 +12,7 @@ from google import genai
 # ============================================
 # 2. API Key Configuration
 # ============================================
-MY_API_KEY = "............................."
+MY_API_KEY = "AIzaSyC0TrXrm97xteLHto48WRp0oQwHKC4SLZs"
 
 
 # ============================================
@@ -353,7 +353,7 @@ with gr.Blocks(title="Dental Genie Pro", theme=dental_theme, css=custom_css) as 
     gr.Markdown(
         """
         ## 🦷 Dental Genie Pro
-        AI-assistant by **Gemini 3** for dental students — learning , and clinical reasoning.
+        AI-assistant by **Gemini 3** for dental students — educational use only — diagnosis , learning , and clinical reasoning.
         """
     )
 
