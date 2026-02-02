@@ -101,7 +101,7 @@ def analyze_xray_image(image) -> str:
     if image is None:
         return "Please upload an image for analysis."
     return call_dental_bot([
-        "Analyze this dental X-ray. What pathology do you see?",
+        "Analyze this dental X-ray. What do you see?",
         image
     ])
 
