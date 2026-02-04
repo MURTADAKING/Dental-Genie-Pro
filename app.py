@@ -12,7 +12,7 @@ from google import genai
 # ============================================
 # 2. API Key Configuration
 # ============================================
-MY_API_KEY = "..........................."
+MY_API_KEY = os.environ.get("MY_API_KEY")
 
 
 # ============================================
@@ -101,7 +101,7 @@ def analyze_xray_image(image) -> str:
     if image is None:
         return "Please upload an image for analysis."
     return call_dental_bot([
-        "Analyze this dental X-ray. What do you see?",
+        "A detailed and organized analysis this dental X-ray. What do you see?",
         image
     ])
 
